@@ -6,6 +6,7 @@ import OrderForm from './Components/OrderForm';
 import OrderHistory from './Components/OrderHistory';
 
 const App = () => {
+  console.log(location.hostname)
   return (
     <Router>
       <nav className="bg-gray-900 text-white p-4 flex justify-center gap-6">
