@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { BASE_URL } from '../context/constants';
+import { ShoppingCart } from 'lucide-react';
 
 const MenuList = () => {
   const [menu, setMenu] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -14,9 +15,9 @@ const MenuList = () => {
         const res = await axios.get(BASE_URL + '/menu');
         setMenu(res.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
-        setLoading(false); // Set loading false after API call
+        setLoading(false);
       }
     };
 
@@ -24,36 +25,43 @@ const MenuList = () => {
   }, []);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">🍽️ Our Menu</h2>
+    <div className="px-6 py-14 max-w-6xl mx-auto">
+      <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-12">
+        Explore Our Flavors 🍜
+      </h2>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : menu.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-8">
           {menu.map(item => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border"
+              className="flex flex-col md:flex-row bg-white/30 backdrop-blur-md border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300"
             >
               {item.imageUrl && (
                 <img
                   src={item.imageUrl}
                   alt={item.name}
-                  className="w-full h-48 object-cover"
+                  className="w-full md:w-60 h-60 object-cover object-center"
                 />
               )}
-              <div className="p-4">
-                <h3 className="text-xl font-semibold">{item.name}</h3>
-                <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                <div className="flex justify-between items-center mt-4">
-                  <span className="text-lg font-bold text-green-600">₹{item.price}</span>
+              <div className="flex flex-col justify-between p-6 flex-1">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{item.name}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{item.description}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xl font-semibold text-green-600">
+                    ₹{item.price}
+                  </span>
                   <button
                     onClick={() => addToCart(item)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md text-sm"
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
                   >
+                    <ShoppingCart size={18} />
                     Add to Cart
                   </button>
                 </div>
@@ -69,7 +77,3 @@ const MenuList = () => {
 };
 
 export default MenuList;
-
-
-
-

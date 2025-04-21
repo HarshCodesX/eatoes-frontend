@@ -1,9 +1,7 @@
-
-
-
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { ShoppingCart, IndianRupee } from 'lucide-react';
 
 const Cart = () => {
   const { cart } = useCart();
@@ -15,40 +13,65 @@ const Cart = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">🛒 Your Cart</h2>
-      {cart.length === 0 ? (
-        <p className="text-gray-500 text-center text-lg">Your cart is empty.</p>
-      ) : (
-        <div className="space-y-6">
-          {cart.map(item => (
-            <div
-              key={item._id}
-              className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 rounded-2xl shadow-lg border hover:shadow-xl transition-shadow"
-            >
-              <div className="mb-2 sm:mb-0">
-                <h4 className="text-xl font-semibold text-gray-800">{item.name}</h4>
-                <p className="text-sm text-gray-500">Quantity: <span className="font-medium">{item.quantity}</span></p>
-              </div>
-              <p className="text-lg font-semibold text-green-600 mt-1 sm:mt-0">₹{item.price * item.quantity}</p>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-4xl font-bold text-center text-indigo-700 flex justify-center items-center gap-2 mb-12">
+          <ShoppingCart className="w-8 h-8 text-indigo-600" />
+          Cart Overview
+        </h2>
+
+        {cart.length === 0 ? (
+          <p className="text-center text-gray-500 text-lg">🛒 Your cart is currently empty.</p>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left side: cart items */}
+            <div className="lg:col-span-2 space-y-6">
+              {cart.map(item => (
+                <div
+                  key={item._id}
+                  className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm flex justify-between items-center"
+                >
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Quantity: <span className="font-medium">{item.quantity}</span>
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1 text-green-600 font-semibold text-lg">
+                    <IndianRupee className="w-5 h-5" />
+                    {item.price * item.quantity}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
 
-          <div className="flex justify-between items-center mt-6 text-xl font-bold text-gray-800">
-            <span>Total:</span>
-            <span className="text-green-700">₹{total.toFixed(2)}</span>
-          </div>
+            {/* Right side: summary */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-md sticky top-6 h-fit">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Summary</h3>
 
-          <div className="flex justify-end">
-            <button
-              onClick={handlePlaceOrder}
-              className="mt-4 bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200"
-            >
-              ✅ Place Order
-            </button>
+              <div className="flex justify-between items-center text-lg mb-4">
+                <span className="text-gray-600">Items:</span>
+                <span className="text-gray-800 font-medium">{cart.length}</span>
+              </div>
+
+              <div className="flex justify-between items-center text-xl font-semibold border-t pt-4 text-green-700">
+                <span>Total:</span>
+                <span className="flex items-center gap-1">
+                  <IndianRupee className="w-5 h-5" />
+                  {total.toFixed(2)}
+                </span>
+              </div>
+
+              <button
+                onClick={handlePlaceOrder}
+                className="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-md"
+              >
+                ✅ Place Order
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
